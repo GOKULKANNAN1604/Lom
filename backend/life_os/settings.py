@@ -200,7 +200,8 @@ if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True          # ← allows localhost:5173, 5174, etc.
 else:
     CORS_ALLOWED_ORIGINS = [
-        'https://your-production-domain.com',
+        'https://lom-beta.vercel.app',
+        'https://lom-ohz1kdfkj-gokulkannan1004s-projects.vercel.app',
     ]
 
 # Allow the browser to send Authorization header + cookies
