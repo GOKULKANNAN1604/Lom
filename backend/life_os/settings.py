@@ -201,7 +201,9 @@ if DEBUG:
 else:
     CORS_ALLOWED_ORIGINS = [
         'https://lom-beta.vercel.app',
-        'https://lom-ohz1kdfkj-gokulkannan1004s-projects.vercel.app',
+    ]
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https://lom-.*\.vercel\.app$",
     ]
 
 # Allow the browser to send Authorization header + cookies
