@@ -1,0 +1,276 @@
+/* =============================================================
+   Life OS Tracker — Global Styles
+   Tailwind directives + CSS custom properties (design tokens)
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* ── CSS Custom Properties (Design Tokens) ─────────────────── */
+@layer base {
+  :root {
+    /* Pillar hues — tweak these to re-theme the whole app */
+    --perf-hue:   14;    /* 🔥 Orange-red  — Performance */
+    --study-hue:  270;   /* 📚 Purple      — Study        */
+    --tech-hue:   217;   /* 💻 Indigo-blue  — Tech        */
+
+    /* Surface palette (dark mode by default) */
+    --color-surface:   220 17% 9%;     /* deepest background */
+    --color-overlay:   220 15% 13%;    /* card / panel surface */
+    --color-border:    220 12% 20%;    /* subtle dividers */
+    --color-muted:     220 10% 40%;    /* placeholder / disabled text */
+    --color-primary:   220 15% 92%;    /* main text */
+    --color-secondary: 220 10% 62%;    /* secondary text */
+
+    /* Glass card specific variables (dark mode) */
+    --card-bg:           rgba(255, 255, 255, 0.04);
+    --card-bg-hover:     rgba(255, 255, 255, 0.07);
+    --card-border:       rgba(255, 255, 255, 0.06);
+    --card-border-hover: rgba(255, 255, 255, 0.10);
+    --input-bg:          rgba(255, 255, 255, 0.05);
+  }
+
+  .light {
+    /* Surface palette (light mode) */
+    --color-surface:   220 20% 97%;    /* clean light background */
+    --color-overlay:   0 0% 100%;      /* white cards */
+    --color-border:    220 15% 85%;    /* light dividers */
+    --color-muted:     220 10% 50%;    /* placeholder / secondary text */
+    --color-primary:   220 25% 12%;    /* main text */
+    --color-secondary: 220 12% 35%;    /* secondary text */
+
+    /* Glass card specific variables (light mode) */
+    --card-bg:           rgba(255, 255, 255, 0.70);
+    --card-bg-hover:     rgba(255, 255, 255, 0.85);
+    --card-border:       rgba(0, 0, 0, 0.08);
+    --card-border-hover: rgba(0, 0, 0, 0.12);
+    --input-bg:          rgba(0, 0, 0, 0.03);
+  }
+
+  /* Smooth dynamic background across the whole page */
+  html {
+    @apply bg-surface text-primary;
+    scroll-behavior: smooth;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  body {
+    @apply font-sans antialiased min-h-screen;
+  }
+
+  /* Consistent focus ring */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-tech ring-offset-2 ring-offset-surface;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar       { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: hsla(var(--color-border) / 0.5); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: hsla(var(--color-muted) / 0.5); }
+}
+
+
+/* ── Reusable Component Classes ────────────────────────────── */
+@layer components {
+
+  /* Glass card — the primary content container */
+  .glass-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    @apply rounded-2xl backdrop-blur-md shadow-card transition-all duration-300;
+  }
+  .glass-card:hover {
+    background-color: var(--card-bg-hover);
+    border-color: var(--card-border-hover);
+  }
+
+  /* Pillar accent borders */
+  .card-perf   { @apply border-l-4 border-l-perf; }
+  .card-study  {
+    border-left-width: 4px;
+    border-left-color: hsl(var(--study-hue) 75% 55%);
+  }
+  .card-tech   { @apply border-l-4 border-l-tech; }
+
+  /* Primary action button */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2
+           px-4 py-2 rounded-xl font-medium text-sm
+           transition-all duration-200 cursor-pointer
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-tech text-white hover:bg-tech-dark
+           shadow-glow-tech hover:shadow-none;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent border border-border
+           text-secondary hover:text-primary hover:border-white/20;
+  }
+  .btn-danger {
+    @apply btn bg-red-500/10 text-red-400 border border-red-500/20
+           hover:bg-red-500/20;
+  }
+
+  /* Input fields */
+  .input {
+    background-color: var(--input-bg);
+    @apply w-full rounded-xl border border-border
+           px-4 py-2.5 text-sm text-primary placeholder:text-muted
+           focus:outline-none focus:ring-1 focus:ring-tech/60 focus:border-tech/60
+           transition duration-200;
+  }
+
+  /* Streak badge */
+  .streak-badge {
+    background-color: var(--input-bg);
+    @apply inline-flex items-center gap-1 px-2.5 py-1
+           rounded-full text-xs font-semibold border border-border;
+  }
+
+  /* Section label */
+  .label {
+    @apply block text-xs font-medium text-muted uppercase tracking-widest mb-1.5;
+  }
+}
+
+
+/* ── Utility Overrides ─────────────────────────────────────── */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  /* Gradient text helpers */
+  .gradient-perf {
+    @apply bg-gradient-to-r from-perf to-perf-light bg-clip-text text-transparent;
+  }
+  .gradient-study {
+    background-image: linear-gradient(to right, hsl(var(--study-hue) 75% 55%), hsl(var(--study-hue) 75% 70%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .gradient-tech {
+    @apply bg-gradient-to-r from-tech to-tech-light bg-clip-text text-transparent;
+  }
+
+  /* Smooth modal zoom-in */
+  @keyframes modalZoomIn {
+    from {
+      opacity: 0;
+      transform: scale(0.96) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .animate-modal-zoom {
+    animation: modalZoomIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  /* Smooth slide down for accordions */
+  @keyframes slideDownOpen {
+    from {
+      max-height: 0;
+      opacity: 0;
+    }
+    to {
+      max-height: 1200px;
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-down-open {
+    animation: slideDownOpen 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+/* ── Light Mode Utility and Color Overrides ────────────────── */
+/* Override card and background gradients */
+.light .bg-gradient-to-br.from-slate-900.via-indigo-950\/40.to-slate-900,
+.light .bg-gradient-to-br.from-indigo-900\/30,
+.light .bg-gradient-to-br.from-orange-950\/15,
+.light .bg-gradient-to-br.from-indigo-950\/15,
+.light .bg-gradient-to-br.from-emerald-950\/15,
+.light .bg-gradient-to-br.from-purple-950\/15 {
+  background-image: none !important;
+  background-color: var(--card-bg) !important;
+}
+
+/* Override hardcoded backgrounds */
+.light .bg-slate-900,
+.light .bg-slate-950,
+.light .bg-gray-900,
+.light .bg-zinc-900,
+.light .bg-black\/20,
+.light .bg-black\/25,
+.light .bg-black\/30 {
+  background-color: var(--color-overlay) !important;
+}
+
+.light .bg-white\/\[0\.01\],
+.light .bg-white\/\[0\.02\],
+.light .bg-white\/\[0\.03\],
+.light .bg-white\/\[0\.04\],
+.light .bg-white\/\[0\.05\],
+.light .bg-white\/5,
+.light .bg-white\/10 {
+  background-color: var(--input-bg) !important;
+}
+
+/* Override hover backgrounds */
+.light .hover\:bg-white\/\[0\.02\]:hover,
+.light .hover\:bg-white\/\[0\.04\]:hover,
+.light .hover\:bg-white\/5:hover,
+.light .hover\:bg-white\/10:hover {
+  background-color: var(--card-bg-hover) !important;
+}
+
+/* Override borders */
+.light .border-white\/10,
+.light .border-white\/20,
+.light .border-white\/\[0\.03\],
+.light .border-white\/\[0\.04\],
+.light .border-white\/\[0\.05\],
+.light .border-white\/\[0\.06\],
+.light .border-white\/\[0\.08\],
+.light .border-white\/\[0\.10\],
+.light .border-white\/\[0\.12\],
+.light .border-border {
+  border-color: var(--color-border) !important;
+}
+
+/* SVG stroke override */
+.light .stroke-white\/\[0\.04\] {
+  stroke: var(--color-border) !important;
+}
+
+/* Text colors overrides for light mode readability */
+.light .text-secondary {
+  color: hsl(var(--color-secondary)) !important;
+}
+.light .text-muted {
+  color: hsl(var(--color-muted)) !important;
+}
+
+/* Log category and mood card backgrounds to be soft in light mode */
+.light .bg-perf\/10 {
+  background-color: rgba(239, 68, 68, 0.08) !important;
+}
+.light .bg-study\/10 {
+  background-color: rgba(139, 92, 246, 0.08) !important;
+}
+.light .bg-tech\/10 {
+  background-color: rgba(59, 130, 246, 0.08) !important;
+}
+
+/* Highlight items active states */
+.light .bg-white\/\[0\.10\] {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+}
